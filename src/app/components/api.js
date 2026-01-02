@@ -1,7 +1,7 @@
 // src/app/components/api.js
 
 // MAKE SURE THIS IS YOUR CURRENT NGROK URL
-const API_BASE_URL = "https://1f9787ad7584.ngrok-free.app"; 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
