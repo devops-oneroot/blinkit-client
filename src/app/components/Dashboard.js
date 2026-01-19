@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Truck, ScanEye, Play, Square, Loader2, CheckCircle, LogOut } from "lucide-react";
-import { logo, LiveBadge, StatCard, StatusBadge, StreamModal, cn } from "./Shared";
+import { Logo, LiveBadge, StatCard, StatusBadge, StreamModal, cn } from "./Shared";
 import { api } from "./api"; 
 
 export default function Dashboard({ data, onNewEntry, onLogout }) {

@@ -14,6 +14,11 @@ const getAuthHeaders = () => {
 
 export const api = {
   login: async (username, password) => {
+    if (!API_BASE_URL) {
+      console.error("API_BASE_URL is not set. Please configure NEXT_PUBLIC_API_BASE_URL environment variable.");
+      return { error: "API endpoint not configured" };
+    }
+
     const formData = new URLSearchParams();
     formData.append("username", username);
     formData.append("password", password);
@@ -27,14 +32,40 @@ export const api = {
         },
         body: formData,
       });
-      if (!res.ok) throw new Error("Login failed");
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        let errorMessage = "Login failed";
+        
+        if (res.status === 401) {
+          errorMessage = "Invalid username or password";
+        } else if (res.status === 404) {
+          errorMessage = "Login endpoint not found. Please check API URL.";
+        } else {
+          try {
+            const errorData = JSON.parse(errorText);
+            errorMessage = errorData.detail || errorData.message || errorMessage;
+          } catch {
+            errorMessage = errorText || errorMessage;
+          }
+        }
+        
+        console.error(`Login Error (${res.status}):`, errorMessage);
+        return { error: errorMessage };
+      }
+      
       const data = await res.json();
+      if (!data.access_token) {
+        console.error("Login response missing access_token:", data);
+        return { error: "Invalid response from server" };
+      }
+      
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("user", username);
       return { success: true, user: username };
     } catch (error) {
       console.error("Login Error:", error);
-      return { error: error.message };
+      return { error: error.message || "Network error. Please check your connection." };
     }
   },
 
