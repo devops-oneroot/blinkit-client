@@ -51,14 +51,10 @@ export default function Dashboard({ data, onNewEntry, onLogout }) {
     }
   };
 
-  const handleTerminate = async () => {
+  const handleTerminateInvoice = async () => {
     await handleStopServer();
-    console.log("Terminate clicked");
-  };
-
-  const handleViewInvoice = () => {
     // TODO: Navigate to invoice view when available
-    console.log("View Invoice clicked");
+    console.log("Terminate / Invoice clicked");
   };
 
   return (
@@ -109,21 +105,23 @@ export default function Dashboard({ data, onNewEntry, onLogout }) {
                <button onClick={handleStopServer} disabled={serverStatus === "idle" || serverStatus === "stopping"} className={cn("flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto", serverStatus === "idle" ? "bg-secondary text-black cursor-not-allowed opacity-50" : "bg-destructive text-black hover:bg-destructive/90 shadow-lg shadow-destructive/20")}>
                    {serverStatus === "stopping" ? <Loader2 className="w-6 h-6 animate-spin"/> : <Square className="w-6 h-6 fill-current" />} Stop
                </button>
-               <button
-                 type="button"
-                 onClick={handleTerminate}
-                 className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto bg-secondary text-black hover:bg-secondary/80"
-               >
-                 Terminate
-               </button>
-               <button
-                 type="button"
-                 onClick={handleViewInvoice}
-                 className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto bg-secondary text-black hover:bg-secondary/80"
-               >
-                 View Invoice
-               </button>
            </div>
+        </div>
+
+        {/* TERMINATE / INVOICE AREA */}
+        <div className="bg-destructive/10 border border-destructive/30 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h4 className="text-xs font-semibold text-destructive uppercase tracking-wider">
+              End Session &amp; Invoice
+            </h4>
+          </div>
+          <button
+            type="button"
+            onClick={handleTerminateInvoice}
+            className="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm md:text-base bg-destructive text-black hover:bg-destructive/90 shadow-lg shadow-destructive/30 transition-all"
+          >
+            Terminate / Invoice
+          </button>
         </div>
 
         {/* NEW ENTRY BANNER */}
