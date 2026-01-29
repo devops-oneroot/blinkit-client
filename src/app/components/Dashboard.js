@@ -51,6 +51,16 @@ export default function Dashboard({ data, onNewEntry, onLogout }) {
     }
   };
 
+  const handleTerminate = async () => {
+    await handleStopServer();
+    console.log("Terminate clicked");
+  };
+
+  const handleViewInvoice = () => {
+    // TODO: Navigate to invoice view when available
+    console.log("View Invoice clicked");
+  };
+
   return (
     <div className="min-h-screen bg-background relative">
       <StreamModal isOpen={isStreamOpen} onClose={() => setIsStreamOpen(false)} />
@@ -60,6 +70,13 @@ export default function Dashboard({ data, onNewEntry, onLogout }) {
           <Logo onClick={onNewEntry} />
           <div className="flex items-center gap-4">
             <LiveBadge />
+            <button
+              type="button"
+              onClick={() => {}}
+              className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-border text-xs md:text-sm font-medium text-foreground bg-background hover:bg-muted transition-colors"
+            >
+              History
+            </button>
             <button onClick={onLogout} className="text-muted-foreground hover:text-destructive transition-colors p-2" title="Logout">
               <LogOut className="w-5 h-5" />
             </button>
@@ -85,12 +102,26 @@ export default function Dashboard({ data, onNewEntry, onLogout }) {
                <h3 className="font-bold text-2xl md:text-3xl text-foreground font-mono tracking-tight">Truck {truckNumber}</h3>
                <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">Status: <span className={cn("font-semibold uppercase", serverStatus === "running" ? "text-success" : "text-muted-foreground")}>{serverStatus === "idle" ? "Stopped" : serverStatus}</span></p>
            </div>
-           <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-               <button onClick={handleStartServer} disabled={serverStatus === "running" || serverStatus === "starting"} className={cn("flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto", serverStatus === "running" ? "bg-secondary text-muted-foreground cursor-not-allowed opacity-50" : "bg-success text-success-foreground hover:bg-success/90 shadow-lg shadow-success/20")}>
+           <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full md:w-auto">
+               <button onClick={handleStartServer} disabled={serverStatus === "running" || serverStatus === "starting"} className={cn("flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto", serverStatus === "running" ? "bg-secondary text-black cursor-not-allowed opacity-50" : "bg-success text-black hover:bg-success/90 shadow-lg shadow-success/20")}>
                    {serverStatus === "starting" ? <Loader2 className="w-6 h-6 animate-spin"/> : <Play className="w-6 h-6 fill-current" />} Start
                </button>
-               <button onClick={handleStopServer} disabled={serverStatus === "idle" || serverStatus === "stopping"} className={cn("flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto", serverStatus === "idle" ? "bg-secondary text-muted-foreground cursor-not-allowed opacity-50" : "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-lg shadow-destructive/20")}>
+               <button onClick={handleStopServer} disabled={serverStatus === "idle" || serverStatus === "stopping"} className={cn("flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto", serverStatus === "idle" ? "bg-secondary text-black cursor-not-allowed opacity-50" : "bg-destructive text-black hover:bg-destructive/90 shadow-lg shadow-destructive/20")}>
                    {serverStatus === "stopping" ? <Loader2 className="w-6 h-6 animate-spin"/> : <Square className="w-6 h-6 fill-current" />} Stop
+               </button>
+               <button
+                 type="button"
+                 onClick={handleTerminate}
+                 className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto bg-secondary text-black hover:bg-secondary/80"
+               >
+                 Terminate
+               </button>
+               <button
+                 type="button"
+                 onClick={handleViewInvoice}
+                 className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all transform active:scale-95 w-full sm:w-auto bg-secondary text-black hover:bg-secondary/80"
+               >
+                 View Invoice
                </button>
            </div>
         </div>
