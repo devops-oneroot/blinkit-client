@@ -114,6 +114,23 @@ export const api = {
     }
   },
 
+  terminate: async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/terminate`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || `Terminate failed: ${res.status}`);
+      }
+      return await res.json().catch(() => ({}));
+    } catch (error) {
+      console.error("Terminate Error:", error);
+      throw error;
+    }
+  },
+
   getCount: async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/count`, {

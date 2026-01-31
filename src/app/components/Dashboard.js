@@ -52,9 +52,13 @@ export default function Dashboard({ data, onNewEntry, onLogout }) {
   };
 
   const handleTerminateInvoice = async () => {
-    await handleStopServer();
-    // TODO: Navigate to invoice view when available
-    console.log("Terminate / Invoice clicked");
+    try {
+      await api.terminate();
+      setServerStatus("idle");
+      // TODO: Navigate to invoice view when available
+    } catch (error) {
+      console.error("Terminate failed:", error);
+    }
   };
 
   return (
